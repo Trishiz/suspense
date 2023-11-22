@@ -2,20 +2,13 @@ package zw.co.nbs.suspense.schedule.impl;
 
 
 import ch.qos.logback.classic.Logger;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
-
-
 import zw.co.nbs.suspense.fbeq.api.StatementGenerator;
-
-import java.io.File;
 import java.util.concurrent.atomic.AtomicBoolean;
-
+import static sun.security.jgss.GSSToken.debug;
 public class EmailStatementSubscriptionScheduleImpl implements EmailStatementSubscriptionScheduleIImpl {
 
     @Value("${spring.servlet.multipart.location}")
@@ -34,8 +27,6 @@ public class EmailStatementSubscriptionScheduleImpl implements EmailStatementSub
     private final Environment environment;
     private final StatementGenerator statementGenerator;
 
-//
-    /
     public EmailStatementSubscriptionScheduleImpl(final ApplicationContext context) {
         this.environment = context.getBean(Environment.class);
         this.statementGenerator = context.getBean(StatementGenerator.class);
@@ -62,7 +53,7 @@ public class EmailStatementSubscriptionScheduleImpl implements EmailStatementSub
     @Override
     public void submitSchedule() throws InterruptedException {
         if (!busy.compareAndSet(false, true)) {
-            log.debug("Another statement service still executing.......");
-            return;
+            debug("Another statement service still executing.......");
         }
     }
+}
