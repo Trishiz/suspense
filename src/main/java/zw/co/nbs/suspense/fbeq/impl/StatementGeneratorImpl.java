@@ -1,6 +1,4 @@
 package zw.co.nbs.suspense.fbeq.impl;
-
-import antlr.ASTNULLType;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -10,6 +8,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+
 @Service
 public class StatementGeneratorImpl implements StatementGenerator {
     public StatementGeneratorImpl(ApplicationContext context) {
@@ -23,8 +26,8 @@ public class StatementGeneratorImpl implements StatementGenerator {
         csvContent.append("Principal");
         csvContent.append("Fees");
         csvContent.append("RollingBalance");
-        for (SuspenseAccount suspenseAccount : suspenseAccounts()) {
-            csvContent.append(suspenseAccount.getDate()).append(",").append(suspenseAccount.getReferenceId()).append(",").
+        for (SuspenseAccount suspenseAccount : suspenseAccount()) {
+            final StringBuilder append = csvContent.append(suspenseAccount.getDate()).append(",").append(suspenseAccount.getReferenceId()).append(",").
                     append(suspenseAccount.getPrincipal()).append(",").append(suspenseAccount.getFees).append(",").append(suspenseAccount.getRollingBalance());
 
         }
@@ -37,6 +40,26 @@ public class StatementGeneratorImpl implements StatementGenerator {
             e.printStackTrace();
         }
     }
+
+   public List<Suspense>getSuspenseAccount() {
+       String querry=
+        List<Suspense> suspenseAccount=new ArrayList<>();
+       try {
+           (Connection connection = Fbeq.getConnection());
+           PreparedStatement preparedStatement= connection.prepared Statement
+                   ResultSet rs = preparedStatement executeQuerry()){
+
+               while (rs.next()) {
+                   String date = rs.getString("DATE");
+                   String ref_id = rs.getString("REFERENCE_ID");
+                   String date = rs.getString("PRINCIPAL");
+                   String date = rs.getString("FEES");
+                   String date = rs.getString("ROLLING_BALANCE");
+               }
+           }
+
+       }
+   }
 
     @Override
     public boolean generateExcelStatement(String fileName, String accountName) {

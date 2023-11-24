@@ -7,49 +7,31 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import zw.co.nbs.suspense.fbeq.api.StatementGenerator;
+import zw.co.nbs.suspense.schedule.api.EmailStatementSubscriptionSchedule;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 import static sun.security.jgss.GSSToken.debug;
-public class EmailStatementSubscriptionScheduleImpl implements EmailStatementSubscriptionScheduleIImpl {
+public class EmailStatementSubscriptionScheduleImpl implements EmailStatementSubscriptionSchedule {
 
-    @Value("${spring.servlet.multipart.location}")
-    private String uploadLocation;
-
-    @Value("${scheduled-tasks.service.statement-subscriptions.cc}")
-    private String ccTo;
-
-    @Value("${statement-subscriptions.email}")
-    private String statementEmail;
-
-    @Value("${bfeq.statement.date-format}")
-    private String statementDateFormat;
 
     private final AtomicBoolean busy = new AtomicBoolean(false);
-    private final Environment environment;
     private final StatementGenerator statementGenerator;
 
     public EmailStatementSubscriptionScheduleImpl(final ApplicationContext context) {
-        this.environment = context.getBean(Environment.class);
         this.statementGenerator = context.getBean(StatementGenerator.class);
     }
 
     @Override
-    @Scheduled(cron = "${scheduled-tasks.service.statement-subscriptions.schedule}")
+    @Scheduled(cron = "0 8 * * *")
     public void atSchedule() {
-        boolean enabled = false;
+
         try {
-            enabled = Boolean.parseBoolean(environment.getProperty("scheduled-tasks.service.statement-subscriptions.enabled"));
-        } catch (Exception ignored) {
-        }
-        try {
-            if (enabled) {
-                submitSchedule();
-            }
+            submitSchedule();
         } catch (InterruptedException ex) {
             Logger log = null;
             log.error("Error in starting the statement sending job.......{}", ex.toString());
         }
     }
-
     @Override
     public void submitSchedule() throws InterruptedException {
         if (!busy.compareAndSet(false, true)) {

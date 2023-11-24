@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import zw.co.nbs.suspense.fbeq.api.FbeqDBConnection;
 
+import javax.management.Query;
 import java.sql.*;
 
 @NoArgsConstructor
@@ -23,20 +24,18 @@ public class FbeqDBConnectionImpl implements FbeqDBConnection {
     private String password;
     public static Connection conn;
 
-
     private Connection openConn() throws Exception {
         if (conn == null || conn.isClosed()) {
             return conn;
         }
 
-        public ResultSet executeQuery (String sqlQuery)
+        public ResultSet executeQuery (String Query)
         {
             ResultSet rs = null;
 
-            return (Connection) rs;
+            return (rs.Connection);
         }
     }
-
     @Override
     public ResultSet executeQuery(String sqlString) {
         return null;
