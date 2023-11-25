@@ -1,4 +1,4 @@
-package zw.co.nbs.suspense.fbeq.api;
+package zw.co.nbs.suspense.fbeq;
 
 import java.sql.ResultSet;
 

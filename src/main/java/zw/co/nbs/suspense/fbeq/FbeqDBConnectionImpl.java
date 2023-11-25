@@ -1,12 +1,9 @@
-package zw.co.nbs.suspense.fbeq.impl;
+package zw.co.nbs.suspense.fbeq;
 
 import lombok.NoArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Value;
-import zw.co.nbs.suspense.fbeq.api.FbeqDBConnection;
 
-import javax.management.Query;
-import java.sql.*;
+import java.sql.ResultSet;
 
 @NoArgsConstructor
 public class FbeqDBConnectionImpl implements FbeqDBConnection {
@@ -22,22 +19,14 @@ public class FbeqDBConnectionImpl implements FbeqDBConnection {
 
     @Value("${spring-datasource.password}")
     private String password;
-    public static Connection conn;
 
-    private Connection openConn() throws Exception {
-        if (conn == null || conn.isClosed()) {
-            return conn;
-        }
-
-        public ResultSet executeQuery (String Query)
-        {
-            ResultSet rs = null;
-
-            return (rs.Connection);
-        }
-    }
     @Override
     public ResultSet executeQuery(String sqlString) {
         return null;
+
+
+
     }
 }
+
+
